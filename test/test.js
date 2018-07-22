@@ -153,4 +153,34 @@ describe('business-days', function () {
                 done(e)
             })
     })
+
+    it('returns a date in a different format than it received it', function (done) {
+
+        var date = '20-07-2018' //Friday
+        var format = 'DD-MM-YYYY'
+        var outputFormat = 'dddd, MMMM Do YYYY, h:mm a'
+
+        request(server)
+            .get('/business-add?date=' + date + '&format=' + format + '&amount=1&outputFormat=' + outputFormat)
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: 'Monday, July 23rd 2018, 12:00 am'
+                }
+
+                assert(equal(actual, expected))
+                //console.log('actual: ' + JSON.stringify(actual))
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
 })
