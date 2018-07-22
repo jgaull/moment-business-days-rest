@@ -29,7 +29,7 @@ describe('business-days', function () {
                     date: '23-07-2018' //Monday
                 }
                 
-                assert.equal(actual.date, expected.date)
+                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
@@ -58,7 +58,7 @@ describe('business-days', function () {
                     date: '20-07-2018' //Friday
                 }
 
-                assert.equal(actual.date, expected.date)
+                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
@@ -87,7 +87,7 @@ describe('business-days', function () {
                     isBusinessDay: true
                 }
 
-                assert.equal(actual.date, expected.date)
+                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
@@ -116,7 +116,7 @@ describe('business-days', function () {
                     date: '23-07-2018' //Monday
                 }
 
-                assert.equal(actual.date, expected.date)
+                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
@@ -145,7 +145,7 @@ describe('business-days', function () {
                     date: '20-07-2018' //Friday
                 }
 
-                assert.equal(actual.date, expected.date)
+                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
