@@ -10,75 +10,63 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/business-add', function (req, res) {
 
-    var date = req.query.date
-    var format = req.query.format
-    var amount = req.query.amount
-
-    var outputFormat = req.query.outputFormat
-    if (!outputFormat) {
-        outputFormat = format
-    }
+    var params = parseRequest(req)
 
     res.send({
-        date: moment(date, format).businessAdd(amount).format(outputFormat)
+        date: moment(params.date, params.format).businessAdd(params.amount).format(params.outputFormat),
+        params: params
     })
 })
 
 app.use('/business-subtract', function (req, res) {
 
-    var date = req.query.date
-    var format = req.query.format
-    var amount = req.query.amount
-
-    var outputFormat = req.query.outputFormat
-    if (!outputFormat) {
-        outputFormat = format
-    }
+    var params = parseRequest(req)
 
     res.send({
-        date: moment(date, format).businessSubtract(amount).format(outputFormat)
+        date: moment(params.date, params.format).businessSubtract(params.amount).format(params.outputFormat),
+        params: params
     })
 })
 
 app.use('/is-business-day', function (req, res) {
 
-    var date = req.query.date
-    var format = req.query.format
+    var params = parseRequest(req)
 
     res.send({
-        isBusinessDay: moment(date, format).isBusinessDay()
+        isBusinessDay: moment(params.date, params.format).isBusinessDay(),
+        params: params
     })
 })
 
 app.use('/next-business-day', function (req, res) {
 
-    var date = req.query.date
-    var format = req.query.format
-
-    var outputFormat = req.query.outputFormat
-    if (!outputFormat) {
-        outputFormat = format
-    }
+    var params = parseRequest(req)
 
     res.send({
-        date: moment(date, format).nextBusinessDay().format(outputFormat)
+        date: moment(params.date, params.format).nextBusinessDay().format(params.outputFormat),
+        params: params
     })
 })
 
 app.use('/prev-business-day', function (req, res) {
 
-    var date = req.query.date
-    var format = req.query.format
-
-    var outputFormat = req.query.outputFormat
-    if (!outputFormat) {
-        outputFormat = format
-    }
+    var params = parseRequest(req)
 
     res.send({
-        date: moment(date, format).prevBusinessDay().format(outputFormat)
+        date: moment(params.date, params.format).prevBusinessDay().format(params.outputFormat),
+        params: params
     })
 })
+
+function parseRequest(req) {
+
+    return {
+        date: req.query.date,
+        format: req.query.format,
+        amount: req.query.amount,
+        outputFormat: req.query.outputFormat || req.query.format
+    }
+}
 
 //start the server
 var port = process.env.PORT || 8888

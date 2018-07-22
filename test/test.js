@@ -26,7 +26,13 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '23-07-2018' //Monday
+                    date: '23-07-2018', //Monday
+                    params: {
+                        date: date,
+                        format: format,
+                        amount: 1,
+                        outputFormat: format
+                    }
                 }
                 
                 assert(equal(actual, expected))
@@ -55,7 +61,13 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '20-07-2018' //Friday
+                    date: '20-07-2018', //Friday
+                    params: {
+                        date: date,
+                        format: format,
+                        amount: 1,
+                        outputFormat: format
+                    }
                 }
 
                 assert(equal(actual, expected))
@@ -84,7 +96,12 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    isBusinessDay: true
+                    isBusinessDay: true,
+                    params: {
+                        date: date,
+                        format: format,
+                        outputFormat: format
+                    }
                 }
 
                 assert(equal(actual, expected))
@@ -113,7 +130,12 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '23-07-2018' //Monday
+                    date: '23-07-2018', //Monday
+                    params: {
+                        date: date,
+                        format: format,
+                        outputFormat: format
+                    }
                 }
 
                 assert(equal(actual, expected))
@@ -142,7 +164,12 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '20-07-2018' //Friday
+                    date: '20-07-2018', //Friday
+                    params: {
+                        date: date,
+                        format: format,
+                        outputFormat: format
+                    }
                 }
 
                 assert(equal(actual, expected))
@@ -172,7 +199,13 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: 'Monday, July 23rd 2018, 12:00 am'
+                    date: 'Monday, July 23rd 2018, 12:00 am',
+                    params: {
+                        date: date,
+                        format: format,
+                        amount: 1,
+                        outputFormat: outputFormat
+                    }
                 }
 
                 assert(equal(actual, expected))
