@@ -20,7 +20,14 @@ app.use('/business-add', function (req, res) {
 })
 
 app.use('/business-subtract', function (req, res) {
-    res.send({})
+
+    var date = req.query.date
+    var format = req.query.format
+    var amount = req.query.amount
+
+    res.send({
+        date: moment(date, format).businessSubtract(amount).format(format)
+    })
 })
 
 app.use('/is-business-day', function (req, res) {

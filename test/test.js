@@ -38,21 +38,30 @@ describe('business-days', function () {
             })
     })
 
-    it('subtracts 2 business days', function (done) {
+    it('subtracts 1 business day', function (done) {
 
         var server = require('../index').server
 
+        var date = '23-07-2018' //Monday
+        var format = 'DD-MM-YYYY'
+
         request(server)
-            .get('/business-subtract')
+            .get('/business-subtract?date=' + date + '&format=' + format + '&amount=1')
             .expect(200)
             .then(function (res) {
 
                 assert(res)
                 assert(res.text)
 
-                var data = JSON.parse(res.text)
-                assert(data)
-                //console.log('data: ' + JSON.stringify(data))
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: '20-07-2018' //Friday
+                }
+
+                assert.equal(actual.date, expected.date)
+                //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
             }).catch(function (e) {
