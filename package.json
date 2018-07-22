@@ -1,6 +1,6 @@
 {
   "name": "moment-business-days-rest",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Restful version of moment-business-days",
   "main": "index.js",
   "scripts": {
