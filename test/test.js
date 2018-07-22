@@ -1,7 +1,6 @@
 
 var request = require('supertest')
 var assert = require('assert')
-var equal = require('deep-equal')
 
 describe('business-days', function () {
 
@@ -15,8 +14,8 @@ describe('business-days', function () {
         var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/business-add?date=' + date + '&format=' + format + '&amount=1')
-            .expect(200)
+            .get('/add-working-time?date=' + date + '&format=' + format + '&amount=1')
+            //.expect(200)
             .then(function (res) {
 
                 assert(res)
@@ -31,11 +30,12 @@ describe('business-days', function () {
                         date: '2018-07-20T07:00:00.000Z',
                         format: format,
                         amount: 1,
-                        outputFormat: format
+                        outputFormat: format,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {
@@ -49,7 +49,7 @@ describe('business-days', function () {
         var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/business-subtract?date=' + date + '&format=' + format + '&amount=1')
+            .get('/subtract-working-time?date=' + date + '&format=' + format + '&amount=1')
             .expect(200)
             .then(function (res) {
 
@@ -65,11 +65,12 @@ describe('business-days', function () {
                         date: '2018-07-23T07:00:00.000Z',
                         format: format,
                         amount: 1,
-                        outputFormat: format
+                        outputFormat: format,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {
@@ -83,7 +84,7 @@ describe('business-days', function () {
         var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/is-business-day?date=' + date + '&format=' + format)
+            .get('/is-working-day?date=' + date + '&format=' + format)
             .expect(200)
             .then(function (res) {
 
@@ -98,11 +99,12 @@ describe('business-days', function () {
                     params: {
                         date: '2018-07-23T07:00:00.000Z',
                         format: format,
-                        outputFormat: format
+                        outputFormat: format,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {
@@ -116,7 +118,7 @@ describe('business-days', function () {
         var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/next-business-day?date=' + date + '&format=' + format)
+            .get('/next-working-day?date=' + date + '&format=' + format)
             .expect(200)
             .then(function (res) {
 
@@ -129,13 +131,14 @@ describe('business-days', function () {
                 var expected = {
                     date: '23-07-2018', //Monday
                     params: {
-                        date: '2018-07-23T07:00:00.000Z',
+                        date: '2018-07-20T07:00:00.000Z',
                         format: format,
-                        outputFormat: format
+                        outputFormat: format,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {
@@ -149,7 +152,7 @@ describe('business-days', function () {
         var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/prev-business-day?date=' + date + '&format=' + format)
+            .get('/last-working-day?date=' + date + '&format=' + format)
             .expect(200)
             .then(function (res) {
 
@@ -162,13 +165,14 @@ describe('business-days', function () {
                 var expected = {
                     date: '20-07-2018', //Friday
                     params: {
-                        date: '2018-07-20T07:00:00.000Z',
+                        date: '2018-07-23T07:00:00.000Z',
                         format: format,
-                        outputFormat: format
+                        outputFormat: format,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {
@@ -183,7 +187,7 @@ describe('business-days', function () {
         var outputFormat = 'dddd, MMMM Do YYYY, h:mm a'
 
         request(server)
-            .get('/business-add?date=' + date + '&format=' + format + '&amount=1&outputFormat=' + outputFormat)
+            .get('/add-working-time?date=' + date + '&format=' + format + '&amount=1&outputFormat=' + outputFormat)
             .expect(200)
             .then(function (res) {
 
@@ -199,11 +203,47 @@ describe('business-days', function () {
                         date: '2018-07-20T07:00:00.000Z',
                         format: format,
                         amount: 1,
-                        outputFormat: outputFormat
+                        outputFormat: outputFormat,
+                        units: 'days'
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
-                assert(equal(actual, expected))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
+
+    it('works with weekends as expected', function (done) {
+
+        var date = '2018-07-20 19:41:17.000-07:00' //Friday at 7:41pm PST
+        var format = 'YYYY-MM-DD HH:mm:ss.SSSZ'
+
+        request(server)
+            .get('/add-working-time?date=' + date + '&format=' + format + '&amount=1')
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: '2018-07-23 19:41:17.000-07:00', //Monday at 7:41pm PST
+                    params: {
+                        date: '2018-07-21T02:41:17.000Z',
+                        format: format,
+                        amount: 1,
+                        outputFormat: format,
+                        units: 'days'
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
                 done()
 
             }).catch(function (e) {

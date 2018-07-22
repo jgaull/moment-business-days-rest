@@ -1,34 +1,34 @@
 
 var express = require('express')
 var bodyParser = require('body-parser')
-var moment = require('moment-business-days')
+var moment = require('moment-business-time')
 
 //setup routes
 var app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/business-add', function (req, res) {
+app.use('/add-working-time', function (req, res) {
 
     var params = parseRequest(req)
 
     res.send({
-        date: params.date.businessAdd(params.amount).format(params.outputFormat),
+        date: params.date.clone().addWorkingTime(params.amount, params.units).format(params.outputFormat),
         params: params
     })
 })
 
-app.use('/business-subtract', function (req, res) {
+app.use('/subtract-working-time', function (req, res) {
 
     var params = parseRequest(req)
 
     res.send({
-        date: params.date.businessSubtract(params.amount).format(params.outputFormat),
+        date: params.date.clone().subtractWorkingTime(params.amount, params.units).format(params.outputFormat),
         params: params
     })
 })
 
-app.use('/is-business-day', function (req, res) {
+app.use('/is-working-day', function (req, res) {
 
     var params = parseRequest(req)
 
@@ -38,22 +38,22 @@ app.use('/is-business-day', function (req, res) {
     })
 })
 
-app.use('/next-business-day', function (req, res) {
+app.use('/next-working-day', function (req, res) {
 
     var params = parseRequest(req)
 
     res.send({
-        date: params.date.nextBusinessDay().format(params.outputFormat),
+        date: params.date.clone().nextWorkingDay().format(params.outputFormat),
         params: params
     })
 })
 
-app.use('/prev-business-day', function (req, res) {
+app.use('/last-working-day', function (req, res) {
 
     var params = parseRequest(req)
 
     res.send({
-        date: params.date.prevBusinessDay().format(params.outputFormat),
+        date: params.date.clone().lastWorkingDay().format(params.outputFormat),
         params: params
     })
 })
@@ -61,9 +61,10 @@ app.use('/prev-business-day', function (req, res) {
 function parseRequest(req) {
 
     return {
-        date: moment(req.query.date, req.query.format).startOf('day'),
+        date: moment(req.query.date, req.query.format),
         format: req.query.format,
-        amount: req.query.amount,
+        amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
+        units: req.query.units || 'days',
         outputFormat: req.query.outputFormat || req.query.format
     }
 }
