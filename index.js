@@ -13,7 +13,7 @@ app.use('/business-add', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        date: moment(params.date, params.format).businessAdd(params.amount).format(params.outputFormat),
+        date: params.date.businessAdd(params.amount).format(params.outputFormat),
         params: params
     })
 })
@@ -23,7 +23,7 @@ app.use('/business-subtract', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        date: moment(params.date, params.format).businessSubtract(params.amount).format(params.outputFormat),
+        date: params.date.businessSubtract(params.amount).format(params.outputFormat),
         params: params
     })
 })
@@ -33,7 +33,7 @@ app.use('/is-business-day', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        isBusinessDay: moment(params.date, params.format).isBusinessDay(),
+        isBusinessDay: params.date.isBusinessDay(),
         params: params
     })
 })
@@ -43,7 +43,7 @@ app.use('/next-business-day', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        date: moment(params.date, params.format).nextBusinessDay().format(params.outputFormat),
+        date: params.date.nextBusinessDay().format(params.outputFormat),
         params: params
     })
 })
@@ -53,7 +53,7 @@ app.use('/prev-business-day', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        date: moment(params.date, params.format).prevBusinessDay().format(params.outputFormat),
+        date: params.date.prevBusinessDay().format(params.outputFormat),
         params: params
     })
 })
@@ -61,7 +61,7 @@ app.use('/prev-business-day', function (req, res) {
 function parseRequest(req) {
 
     return {
-        date: req.query.date,
+        date: moment(req.query.date, req.query.format).startOf('day'),
         format: req.query.format,
         amount: req.query.amount,
         outputFormat: req.query.outputFormat || req.query.format

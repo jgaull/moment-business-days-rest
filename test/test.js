@@ -28,15 +28,14 @@ describe('business-days', function () {
                 var expected = {
                     date: '23-07-2018', //Monday
                     params: {
-                        date: date,
+                        date: '2018-07-20T07:00:00.000Z',
                         format: format,
                         amount: 1,
                         outputFormat: format
                     }
                 }
-                
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
@@ -63,15 +62,14 @@ describe('business-days', function () {
                 var expected = {
                     date: '20-07-2018', //Friday
                     params: {
-                        date: date,
+                        date: '2018-07-23T07:00:00.000Z',
                         format: format,
                         amount: 1,
                         outputFormat: format
                     }
                 }
-
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
@@ -98,14 +96,13 @@ describe('business-days', function () {
                 var expected = {
                     isBusinessDay: true,
                     params: {
-                        date: date,
+                        date: '2018-07-23T07:00:00.000Z',
                         format: format,
                         outputFormat: format
                     }
                 }
-
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
@@ -132,14 +129,13 @@ describe('business-days', function () {
                 var expected = {
                     date: '23-07-2018', //Monday
                     params: {
-                        date: date,
+                        date: '2018-07-23T07:00:00.000Z',
                         format: format,
                         outputFormat: format
                     }
                 }
-
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
@@ -166,14 +162,13 @@ describe('business-days', function () {
                 var expected = {
                     date: '20-07-2018', //Friday
                     params: {
-                        date: date,
+                        date: '2018-07-20T07:00:00.000Z',
                         format: format,
                         outputFormat: format
                     }
                 }
-
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
@@ -201,15 +196,14 @@ describe('business-days', function () {
                 var expected = {
                     date: 'Monday, July 23rd 2018, 12:00 am',
                     params: {
-                        date: date,
+                        date: '2018-07-20T07:00:00.000Z',
                         format: format,
                         amount: 1,
                         outputFormat: outputFormat
                     }
                 }
-
-                assert(equal(actual, expected))
                 //console.log('actual: ' + JSON.stringify(actual))
+                assert(equal(actual, expected))
                 done()
 
             }).catch(function (e) {
