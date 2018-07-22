@@ -11,6 +11,7 @@ describe('business-days', function () {
 
     it('adds 1 business day', function (done) {
 
+        var date = '20-07-2018' //Friday
         var format = 'DD-MM-YYYY'
 
         request(server)
@@ -25,6 +26,7 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
+                    date: '23-07-2018' //Monday
                 }
                 
                 assert.equal(actual.date, expected.date)
