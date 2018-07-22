@@ -40,8 +40,6 @@ describe('business-days', function () {
 
     it('subtracts 1 business day', function (done) {
 
-        var server = require('../index').server
-
         var date = '23-07-2018' //Monday
         var format = 'DD-MM-YYYY'
 
@@ -71,19 +69,26 @@ describe('business-days', function () {
 
     it('tests if it is a business day', function (done) {
 
-        var server = require('../index').server
+        var date = '23-07-2018' //Monday
+        var format = 'DD-MM-YYYY'
 
         request(server)
-            .get('/is-business-day')
+            .get('/is-business-day?date=' + date + '&format=' + format)
             .expect(200)
             .then(function (res) {
 
                 assert(res)
                 assert(res.text)
 
-                var data = JSON.parse(res.text)
-                assert(data)
-                //console.log('data: ' + JSON.stringify(data))
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    isBusinessDay: true
+                }
+
+                assert.equal(actual.date, expected.date)
+                //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
             }).catch(function (e) {
@@ -92,8 +97,6 @@ describe('business-days', function () {
     })
 
     it('returns the next business day', function (done) {
-
-        var server = require('../index').server
 
         request(server)
             .get('/next-business-day')
@@ -114,8 +117,6 @@ describe('business-days', function () {
     })
 
     it('returns the previous business day', function (done) {
-
-        var server = require('../index').server
 
         request(server)
             .get('/prev-business-day')
