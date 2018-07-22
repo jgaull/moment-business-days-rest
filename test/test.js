@@ -215,4 +215,39 @@ describe('business-days', function () {
                 done(e)
             })
     })
+
+    it('works with weekends as expected', function (done) {
+
+        var date = '2018-07-20 19:41:17.000-07:00' //Friday at 7:41pm PST
+        var format = 'YYYY-MM-DD HH:mm:ss.SSSZ'
+
+        request(server)
+            .get('/add-working-time?date=' + date + '&format=' + format + '&amount=1')
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: '2018-07-23 19:41:17.000-07:00', //Monday at 7:41pm PST
+                    params: {
+                        date: '2018-07-21T02:41:17.000Z',
+                        format: format,
+                        amount: 1,
+                        outputFormat: format,
+                        units: 'days'
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
 })

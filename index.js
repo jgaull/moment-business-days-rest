@@ -61,7 +61,7 @@ app.use('/last-working-day', function (req, res) {
 function parseRequest(req) {
 
     return {
-        date: moment(req.query.date, req.query.format).startOf('day'),
+        date: moment(req.query.date, req.query.format),
         format: req.query.format,
         amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
         units: req.query.units || 'days',
