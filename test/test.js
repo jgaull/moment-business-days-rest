@@ -5,7 +5,7 @@ var equal = require('deep-equal')
 
 describe('business-days', function () {
 
-    this.timeout(10000)
+    this.timeout(2000)
 
     var server = require('../index').server
 
