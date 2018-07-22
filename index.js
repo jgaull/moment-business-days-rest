@@ -41,7 +41,13 @@ app.use('/is-business-day', function (req, res) {
 })
 
 app.use('/next-business-day', function (req, res) {
-    res.send({})
+
+    var date = req.query.date
+    var format = req.query.format
+
+    res.send({
+        date: moment(date, format).nextBusinessDay().format(format)
+    })
 })
 
 app.use('/prev-business-day', function (req, res) {

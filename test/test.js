@@ -98,17 +98,26 @@ describe('business-days', function () {
 
     it('returns the next business day', function (done) {
 
+        var date = '20-07-2018' //Friday
+        var format = 'DD-MM-YYYY'
+
         request(server)
-            .get('/next-business-day')
+            .get('/next-business-day?date=' + date + '&format=' + format)
             .expect(200)
             .then(function (res) {
 
                 assert(res)
                 assert(res.text)
 
-                var data = JSON.parse(res.text)
-                assert(data)
-                //console.log('data: ' + JSON.stringify(data))
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: '23-07-2018' //Monday
+                }
+
+                assert.equal(actual.date, expected.date)
+                //console.log('actual: ' + JSON.stringify(actual))
                 done()
 
             }).catch(function (e) {
