@@ -14,8 +14,13 @@ app.use('/business-add', function (req, res) {
     var format = req.query.format
     var amount = req.query.amount
 
+    var outputFormat = req.query.outputFormat
+    if (!outputFormat) {
+        outputFormat = format
+    }
+
     res.send({
-        date: moment(date, format).businessAdd(amount).format(format)
+        date: moment(date, format).businessAdd(amount).format(outputFormat)
     })
 })
 
@@ -25,8 +30,13 @@ app.use('/business-subtract', function (req, res) {
     var format = req.query.format
     var amount = req.query.amount
 
+    var outputFormat = req.query.outputFormat
+    if (!outputFormat) {
+        outputFormat = format
+    }
+
     res.send({
-        date: moment(date, format).businessSubtract(amount).format(format)
+        date: moment(date, format).businessSubtract(amount).format(outputFormat)
     })
 })
 
@@ -45,8 +55,13 @@ app.use('/next-business-day', function (req, res) {
     var date = req.query.date
     var format = req.query.format
 
+    var outputFormat = req.query.outputFormat
+    if (!outputFormat) {
+        outputFormat = format
+    }
+
     res.send({
-        date: moment(date, format).nextBusinessDay().format(format)
+        date: moment(date, format).nextBusinessDay().format(outputFormat)
     })
 })
 
@@ -55,8 +70,13 @@ app.use('/prev-business-day', function (req, res) {
     var date = req.query.date
     var format = req.query.format
 
+    var outputFormat = req.query.outputFormat
+    if (!outputFormat) {
+        outputFormat = format
+    }
+
     res.send({
-        date: moment(date, format).prevBusinessDay().format(format)
+        date: moment(date, format).prevBusinessDay().format(outputFormat)
     })
 })
 
