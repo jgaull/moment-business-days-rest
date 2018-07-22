@@ -1,7 +1,11 @@
 {
   "name": "moment-business-days-rest",
-  "version": "0.0.4",
-  "description": "Restful version of moment-business-days",
+  "version": "0.0.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgaull/moment-business-days-rest.git"
+  },
+  "description": "Restful version of moment-business-time",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
