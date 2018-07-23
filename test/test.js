@@ -114,11 +114,20 @@ describe('business-days', function () {
 
     it('tests if a date is within business hours', function (done) {
 
-        var date = '23-07-2018 17:00:00-7:00' //Monday
+        var date = '23-07-2018 18:00:00-7:00' //Monday
         var format = 'DD-MM-YYYY HH:mm:ssZ'
+        var workinghours = JSON.stringify({
+            0: null,
+            1: ["10:00:00", "18:00:00"],
+            2: ["10:00:00", "18:00:00"],
+            3: ["10:00:00", "18:00:00"],
+            4: ["10:00:00", "18:00:00"],
+            5: ["10:00:00", "18:00:00"],
+            6: null
+        })
 
         request(server)
-            .get('/is-working-time?date=' + date + '&format=' + format)
+            .get('/is-working-time?date=' + date + '&format=' + format + '&workinghours=' + workinghours)
             .expect(200)
             .then(function (res) {
 
@@ -131,10 +140,19 @@ describe('business-days', function () {
                 var expected = {
                     isWorkingTime: true,
                     params: {
-                        date: '2018-07-24T00:00:00.000Z',
+                        date: '2018-07-24T01:00:00.000Z',
                         format: format,
                         outputFormat: format,
-                        units: 'days'
+                        units: 'days',
+                        workinghours: {
+                            0: null,
+                            1: ["10:00:00","18:00:00"],
+                            2: ["10:00:00","18:00:00"],
+                            3: ["10:00:00","18:00:00"],
+                            4: ["10:00:00","18:00:00"],
+                            5: ["10:00:00","18:00:00"],
+                            6: null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
