@@ -80,7 +80,7 @@ describe('business-days', function () {
 
     it('tests if it is a business day', function (done) {
 
-        var date = '23-07-2018' //Monday
+        var date = '22-07-2018' //Monday
         var format = 'DD-MM-YYYY'
 
         request(server)
@@ -95,9 +95,43 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    isBusinessDay: true,
+                    isWorkingDay: false,
                     params: {
-                        date: '2018-07-23T07:00:00.000Z',
+                        date: '2018-07-22T07:00:00.000Z',
+                        format: format,
+                        outputFormat: format,
+                        units: 'days'
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
+
+    it('tests if a date is within business hours', function (done) {
+
+        var date = '23-07-2018 17:00:00-7:00' //Monday
+        var format = 'DD-MM-YYYY HH:mm:ssZ'
+
+        request(server)
+            .get('/is-working-time?date=' + date + '&format=' + format)
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    isWorkingTime: true,
+                    params: {
+                        date: '2018-07-24T00:00:00.000Z',
                         format: format,
                         outputFormat: format,
                         units: 'days'
