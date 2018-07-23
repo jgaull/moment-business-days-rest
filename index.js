@@ -69,13 +69,22 @@ app.use('/last-working-day', function (req, res) {
 })
 
 function parseRequest(req) {
+    
+    var workinghours = req.query.workinghours
+    if (workinghours !== undefined) {
+        workinghours = JSON.parse(workinghours)
+        moment.updateLocale('en', { workinghours: workinghours });
+    }
+
+    //var holidays = ['2015-05-04']
 
     return {
         date: moment(req.query.date, req.query.format),
         format: req.query.format,
         amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
         units: req.query.units || 'days',
-        outputFormat: req.query.outputFormat || req.query.format
+        outputFormat: req.query.outputFormat || req.query.format,
+        workinghours: workinghours
     }
 }
 
