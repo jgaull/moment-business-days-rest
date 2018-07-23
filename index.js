@@ -33,7 +33,17 @@ app.use('/is-working-day', function (req, res) {
     var params = parseRequest(req)
 
     res.send({
-        isBusinessDay: params.date.isBusinessDay(),
+        isWorkingDay: params.date.isWorkingDay(),
+        params: params
+    })
+})
+
+app.use('/is-working-time', function (req, res) {
+
+    var params = parseRequest(req)
+
+    res.send({
+        isWorkingTime: params.date.isWorkingTime(),
         params: params
     })
 })
