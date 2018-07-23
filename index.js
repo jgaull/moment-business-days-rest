@@ -59,6 +59,22 @@ app.use('/last-working-day', function (req, res) {
 })
 
 function parseRequest(req) {
+    
+    var workinghours = {
+        0: null,
+        1: ['10:00:00', '18:00:00'],
+        2: ['10:00:00', '18:00:00'],
+        3: ['10:00:00', '18:00:00'],
+        4: ['10:00:00', '18:00:00'],
+        5: ['10:00:00', '18:00:00'],
+        6: null
+    }
+    /*
+    var holidays = ['2015-05-04']
+    */
+    moment.updateLocale('en', {workinghours: workinghours});
+
+    //console.log('locale: ' + JSON.stringify(moment.localeData()['_workinghours']))
 
     return {
         date: moment(req.query.date, req.query.format),
