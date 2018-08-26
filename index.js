@@ -68,6 +68,16 @@ app.use('/last-working-day', function (req, res) {
     })
 })
 
+app.use('/last-working-time', function (req, res) {
+
+    var params = parseRequest(req)
+
+    res.send({
+        date: params.date.clone().lastWorkingTime().format(params.outputFormat),
+        params: params
+    })
+})
+
 function parseRequest(req) {
     
     var workinghours = req.query.workinghours

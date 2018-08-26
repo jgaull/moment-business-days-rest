@@ -232,6 +232,40 @@ describe('business-days', function () {
             })
     })
 
+    it('returns the end of the previous business day', function (done) {
+
+        var date = '22-07-2018 13:00' //Monday
+        var format = 'DD-MM-YYYY HH:mm'
+
+        request(server)
+            .get('/last-working-time?date=' + date + '&format=' + format)
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    date: '20-07-2018 17:00', //Friday
+                    params: {
+                        date: '2018-07-22T20:00:00.000Z',
+                        format: format,
+                        outputFormat: format,
+                        units: 'days'
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
+
     it('returns a date in a different format than it received it', function (done) {
 
         var date = '20-07-2018' //Friday
