@@ -31,7 +31,8 @@ module.exports = function (req, res, next) {
         amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
         units: req.query.units || 'days',
         outputFormat: req.query.outputFormat || req.query.format,
-        workinghours: params.workinghours
+        workinghours: params.workinghours,
+        toDate: req.query.toDate === undefined ? undefined : moment(req.query.toDate, req.query.format)
     }
 
     next();

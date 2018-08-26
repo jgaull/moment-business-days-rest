@@ -16,6 +16,10 @@ var config = {
     },
     isWorkingTime: {
         responseKey: 'isWorkingTime'
+    },
+    workingDiff: {
+        responseKey: 'diff',
+        args: ['toDate', 'units']
     }
 }
 
@@ -36,7 +40,7 @@ module.exports = function (req, res, next) {
 
     var args = []
     _.each(functionConfig.args, function (path) {
-        args.push(_.get(req.query, path))
+        args.push(_.get(req.query, path, undefined))
     })
 
     params.functionKey = functionKey
