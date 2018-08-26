@@ -25,13 +25,22 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '23-07-2018', //Monday
-                    params: {
-                        date: '2018-07-20T07:00:00.000Z',
-                        format: format,
-                        amount: 1,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "23-07-2018",
+                    "params": {
+                        "date": "2018-07-20T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "amount": 1,
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -58,15 +67,24 @@ describe('business-days', function () {
 
                 var actual = JSON.parse(res.text)
                 assert(actual)
-
+                
                 var expected = {
-                    date: '20-07-2018', //Friday
-                    params: {
-                        date: '2018-07-23T07:00:00.000Z',
-                        format: format,
-                        amount: 1,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "20-07-2018",
+                    "params": {
+                        "date": "2018-07-23T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "amount": 1,
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -93,14 +111,23 @@ describe('business-days', function () {
 
                 var actual = JSON.parse(res.text)
                 assert(actual)
-
+                
                 var expected = {
-                    isWorkingDay: false,
-                    params: {
-                        date: '2018-07-22T07:00:00.000Z',
-                        format: format,
-                        outputFormat: format,
-                        units: 'days'
+                    "isWorkingDay": false,
+                    "params": {
+                        "date": "2018-07-22T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -179,14 +206,23 @@ describe('business-days', function () {
 
                 var actual = JSON.parse(res.text)
                 assert(actual)
-
+                
                 var expected = {
-                    date: '23-07-2018', //Monday
-                    params: {
-                        date: '2018-07-20T07:00:00.000Z',
-                        format: format,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "23-07-2018",
+                    "params": {
+                        "date": "2018-07-20T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -215,12 +251,21 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '20-07-2018', //Friday
-                    params: {
-                        date: '2018-07-23T07:00:00.000Z',
-                        format: format,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "20-07-2018",
+                    "params": {
+                        "date": "2018-07-23T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -234,7 +279,7 @@ describe('business-days', function () {
 
     it('returns the end of the previous business day', function (done) {
 
-        var date = '22-07-2018 13:00' //Monday
+        var date = '22-07-2018 13:00' //Sunday
         var format = 'DD-MM-YYYY HH:mm'
 
         request(server)
@@ -249,12 +294,64 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '20-07-2018 17:00', //Friday
-                    params: {
-                        date: '2018-07-22T20:00:00.000Z',
-                        format: format,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "20-07-2018 17:00",
+                    "params": {
+                        "date": "2018-07-22T20:00:00.000Z",
+                        "format": "DD-MM-YYYY HH:mm",
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY HH:mm",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
+
+    it('returns the start of the next business day', function (done) {
+
+        var date = '22-07-2018 13:00' //Sunday
+        var format = 'DD-MM-YYYY HH:mm'
+
+        request(server)
+            .get('/next-working-time?date=' + date + '&format=' + format)
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    "date": "23-07-2018 09:00",
+                    "params": {
+                        "date": "2018-07-22T20:00:00.000Z",
+                        "format": "DD-MM-YYYY HH:mm",
+                        "units": "days",
+                        "outputFormat": "DD-MM-YYYY HH:mm",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -284,13 +381,22 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: 'Monday, July 23rd 2018, 12:00 am',
-                    params: {
-                        date: '2018-07-20T07:00:00.000Z',
-                        format: format,
-                        amount: 1,
-                        outputFormat: outputFormat,
-                        units: 'days'
+                    "date": "Monday, July 23rd 2018, 12:00 am",
+                    "params": {
+                        "date": "2018-07-20T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "amount": 1,
+                        "units": "days",
+                        "outputFormat": "dddd, MMMM Do YYYY, h:mm a",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
@@ -319,13 +425,22 @@ describe('business-days', function () {
                 assert(actual)
 
                 var expected = {
-                    date: '2018-07-23 19:41:17.000-07:00', //Monday at 7:41pm PST
-                    params: {
-                        date: '2018-07-21T02:41:17.000Z',
-                        format: format,
-                        amount: 1,
-                        outputFormat: format,
-                        units: 'days'
+                    "date": "2018-07-23 19:41:17.000-07:00",
+                    "params": {
+                        "date": "2018-07-21T02:41:17.000Z",
+                        "format": "YYYY-MM-DD HH:mm:ss.SSSZ",
+                        "amount": 1,
+                        "units": "days",
+                        "outputFormat": "YYYY-MM-DD HH:mm:ss.SSSZ",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
                     }
                 }
                 //console.log('actual: ' + JSON.stringify(actual))
