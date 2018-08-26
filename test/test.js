@@ -451,4 +451,62 @@ describe('business-days', function () {
                 done(e)
             })
     })
+
+    it('returns the difference between two dates', function (done) {
+
+        var date = '24-08-2018' //Friday
+        var toDate = '26-08-2018'
+        var format = 'DD-MM-YYYY'
+
+        request(server)
+            .get('/working-diff?date=' + date + '&format=' + format + '&toDate=' + toDate + '&units=hours')
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+
+                var expected = {
+                    "diff": -8,
+                    "params": {
+                        "date": "2018-08-24T07:00:00.000Z",
+                        "format": "DD-MM-YYYY",
+                        "outputFormat": "DD-MM-YYYY",
+                        "units": "hours",
+                        "toDate": "2018-08-26T07:00:00.000Z",
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
+
+    it('fails when calling a function that does not exist', function (done) {
+
+        request(server)
+            .get('/not-a-function')
+            .expect(500)
+            .then(function (response) {
+                done()
+            })
+            .catch(function (e) {
+                done(e)
+            })
+    })
 })
