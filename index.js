@@ -2,15 +2,17 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var moment = require('moment-business-time')
+var parseRequest = require('./parse-request')
 
 //setup routes
 var app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(parseRequest);
 
-app.use('/add-working-time', function (req, res) {
+app.get('/add-working-time', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().addWorkingTime(params.amount, params.units).format(params.outputFormat),
@@ -18,9 +20,9 @@ app.use('/add-working-time', function (req, res) {
     })
 })
 
-app.use('/subtract-working-time', function (req, res) {
+app.get('/subtract-working-time', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().subtractWorkingTime(params.amount, params.units).format(params.outputFormat),
@@ -28,9 +30,9 @@ app.use('/subtract-working-time', function (req, res) {
     })
 })
 
-app.use('/is-working-day', function (req, res) {
+app.get('/is-working-day', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         isWorkingDay: params.date.isWorkingDay(),
@@ -38,9 +40,9 @@ app.use('/is-working-day', function (req, res) {
     })
 })
 
-app.use('/is-working-time', function (req, res) {
+app.get('/is-working-time', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         isWorkingTime: params.date.isWorkingTime(),
@@ -48,9 +50,9 @@ app.use('/is-working-time', function (req, res) {
     })
 })
 
-app.use('/next-working-day', function (req, res) {
+app.get('/next-working-day', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().nextWorkingDay().format(params.outputFormat),
@@ -58,9 +60,9 @@ app.use('/next-working-day', function (req, res) {
     })
 })
 
-app.use('/next-working-time', function (req, res) {
+app.get('/next-working-time', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().nextWorkingTime().format(params.outputFormat),
@@ -68,9 +70,9 @@ app.use('/next-working-time', function (req, res) {
     })
 })
 
-app.use('/last-working-day', function (req, res) {
+app.get('/last-working-day', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().lastWorkingDay().format(params.outputFormat),
@@ -78,48 +80,15 @@ app.use('/last-working-day', function (req, res) {
     })
 })
 
-app.use('/last-working-time', function (req, res) {
+app.get('/last-working-time', function (req, res) {
 
-    var params = parseRequest(req)
+    var params = req.query
 
     res.send({
         date: params.date.clone().lastWorkingTime().format(params.outputFormat),
         params: params
     })
 })
-
-function parseRequest(req) {
-    
-    params = {}
-    var workinghours = req.query.workinghours
-    if (workinghours !== undefined) {
-        params.workinghours = JSON.parse(workinghours)
-    }
-    else {
-        params.workinghours = {
-            0: null,
-            1: ["09:00:00", "17:00:00"],
-            2: ["09:00:00", "17:00:00"],
-            3: ["09:00:00", "17:00:00"],
-            4: ["09:00:00", "17:00:00"],
-            5: ["09:00:00", "17:00:00"],
-            6: null
-        }
-    }
-
-    moment.updateLocale('en', params);
-
-    //var holidays = ['2015-05-04']
-
-    return {
-        date: moment(req.query.date, req.query.format),
-        format: req.query.format,
-        amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
-        units: req.query.units || 'days',
-        outputFormat: req.query.outputFormat || req.query.format,
-        workinghours: params.workinghours
-    }
-}
 
 //start the server
 var port = process.env.PORT || 8888
