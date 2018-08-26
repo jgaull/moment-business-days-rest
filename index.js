@@ -20,7 +20,7 @@ app.get('/:functionKey', getConfig, function (req, res) {
     var date = params.date.clone()
     var runFunction = date[req.params.functionKey]
     if (typeof runFunction !== 'function') {
-        throw req.params.functionKey + 'is not a supported API endpoint'
+        throw req.params.functionKey + ' is not a supported API endpoint'
     }
 
     var result = runFunction.apply(date, req.params.args)

@@ -451,4 +451,17 @@ describe('business-days', function () {
                 done(e)
             })
     })
+
+    it('fails when calling a function that does not exist', function (done) {
+
+        request(server)
+            .get('/not-a-function')
+            .expect(500)
+            .then(function (response) {
+                done()
+            })
+            .catch(function (e) {
+                done(e)
+            })
+    })
 })
