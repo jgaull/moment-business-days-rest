@@ -58,6 +58,16 @@ app.use('/next-working-day', function (req, res) {
     })
 })
 
+app.use('/next-working-time', function (req, res) {
+
+    var params = parseRequest(req)
+
+    res.send({
+        date: params.date.clone().nextWorkingTime().format(params.outputFormat),
+        params: params
+    })
+})
+
 app.use('/last-working-day', function (req, res) {
 
     var params = parseRequest(req)
@@ -68,13 +78,36 @@ app.use('/last-working-day', function (req, res) {
     })
 })
 
+app.use('/last-working-time', function (req, res) {
+
+    var params = parseRequest(req)
+
+    res.send({
+        date: params.date.clone().lastWorkingTime().format(params.outputFormat),
+        params: params
+    })
+})
+
 function parseRequest(req) {
     
+    params = {}
     var workinghours = req.query.workinghours
     if (workinghours !== undefined) {
-        workinghours = JSON.parse(workinghours)
-        moment.updateLocale('en', { workinghours: workinghours });
+        params.workinghours = JSON.parse(workinghours)
     }
+    else {
+        params.workinghours = {
+            0: null,
+            1: ["09:00:00", "17:00:00"],
+            2: ["09:00:00", "17:00:00"],
+            3: ["09:00:00", "17:00:00"],
+            4: ["09:00:00", "17:00:00"],
+            5: ["09:00:00", "17:00:00"],
+            6: null
+        }
+    }
+
+    moment.updateLocale('en', params);
 
     //var holidays = ['2015-05-04']
 
@@ -84,7 +117,7 @@ function parseRequest(req) {
         amount: req.query.amount === undefined ? undefined : Number(req.query.amount),
         units: req.query.units || 'days',
         outputFormat: req.query.outputFormat || req.query.format,
-        workinghours: workinghours
+        workinghours: params.workinghours
     }
 }
 
