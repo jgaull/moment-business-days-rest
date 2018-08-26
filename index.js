@@ -2,90 +2,34 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var moment = require('moment-business-time')
-var parseRequest = require('./parse-request')
+var parseRequest = require('./middleware/parse-request')
+var getConfig = require('./middleware/get-config')
+var camelcase = require('camelcase')
+var _ = require('lodash');
 
 //setup routes
 var app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(parseRequest);
+app.use(parseRequest)
 
-app.get('/add-working-time', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        date: params.date.clone().addWorkingTime(params.amount, params.units).format(params.outputFormat),
-        params: params
-    })
-})
-
-app.get('/subtract-working-time', function (req, res) {
+app.get('/:functionKey', getConfig, function (req, res) {
 
     var params = req.query
 
-    res.send({
-        date: params.date.clone().subtractWorkingTime(params.amount, params.units).format(params.outputFormat),
-        params: params
-    })
-})
+    var date = params.date.clone()
+    var runFunction = date[req.params.functionKey]
+    if (typeof runFunction !== 'function') {
+        throw req.params.functionKey + 'is not a supported API endpoint'
+    }
 
-app.get('/is-working-day', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        isWorkingDay: params.date.isWorkingDay(),
-        params: params
-    })
-})
-
-app.get('/is-working-time', function (req, res) {
-
-    var params = req.query
+    var result = runFunction.apply(date, req.params.args)
+    if (moment.isMoment(result)) {
+        result = result.format(params.outputFormat)
+    }
 
     res.send({
-        isWorkingTime: params.date.isWorkingTime(),
-        params: params
-    })
-})
-
-app.get('/next-working-day', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        date: params.date.clone().nextWorkingDay().format(params.outputFormat),
-        params: params
-    })
-})
-
-app.get('/next-working-time', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        date: params.date.clone().nextWorkingTime().format(params.outputFormat),
-        params: params
-    })
-})
-
-app.get('/last-working-day', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        date: params.date.clone().lastWorkingDay().format(params.outputFormat),
-        params: params
-    })
-})
-
-app.get('/last-working-time', function (req, res) {
-
-    var params = req.query
-
-    res.send({
-        date: params.date.clone().lastWorkingTime().format(params.outputFormat),
+        [req.params.responseKey]: result,
         params: params
     })
 })
