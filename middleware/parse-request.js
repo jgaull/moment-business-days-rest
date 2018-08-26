@@ -1,5 +1,5 @@
 
-var moment = require('moment')
+var moment = require('moment-business-time')
 
 module.exports = function (req, res, next) {
 
