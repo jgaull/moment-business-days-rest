@@ -509,4 +509,49 @@ describe('business-days', function () {
                 done(e)
             })
     })
+
+    it('supports holidays', function (done) {
+
+        var date = '10-18-2018'
+        var format = 'MM-DD-YYYY'
+        var holidays = ['*-10-18', '*-10-18']
+
+        request(server)
+            .get('/is-working-day?date=' + date + '&format=' + format + '&holidays=' + holidays.join(','))
+            .expect(200)
+            .then(function (res) {
+
+                assert(res)
+                assert(res.text)
+
+                var actual = JSON.parse(res.text)
+                assert(actual)
+                
+                var expected = {
+                    "isWorkingDay": false,
+                    "params": {
+                        "date": "2018-10-18T07:00:00.000Z",
+                        "format": "MM-DD-YYYY",
+                        "units": "days",
+                        "outputFormat": "MM-DD-YYYY",
+                        "holidays": ["*-10-18","*-10-18"],
+                        "workinghours": {
+                            "0": null,
+                            "1": ["09:00:00", "17:00:00"],
+                            "2": ["09:00:00", "17:00:00"],
+                            "3": ["09:00:00", "17:00:00"],
+                            "4": ["09:00:00", "17:00:00"],
+                            "5": ["09:00:00", "17:00:00"],
+                            "6": null
+                        }
+                    }
+                }
+                //console.log('actual: ' + JSON.stringify(actual))
+                assert.deepEqual(actual, expected)
+                done()
+
+            }).catch(function (e) {
+                done(e)
+            })
+    })
 })
