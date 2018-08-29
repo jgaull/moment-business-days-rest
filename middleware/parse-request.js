@@ -21,6 +21,11 @@ module.exports = function (req, res, next) {
         }
     }
 
+    var holidays = req.query.holidays
+    if (holidays !== undefined) {
+       params.holidays = holidays.split(',')
+    }
+
     moment.updateLocale('en', params);
 
     //var holidays = ['2015-05-04']
@@ -32,6 +37,7 @@ module.exports = function (req, res, next) {
         units: req.query.units || 'days',
         outputFormat: req.query.outputFormat || req.query.format,
         workinghours: params.workinghours,
+        holidays: params.holidays,
         toDate: req.query.toDate === undefined ? undefined : moment(req.query.toDate, req.query.format)
     }
 
